@@ -18,8 +18,8 @@ Nous profiterons de cet exercice pour se focaliser sur les [Comparaisons asympto
 
 <strong>Bonus</strong> : Créez une fonction permettant de convertir votre liste chaînée en liste standard Python.
 
-Dans cet exercice, <strong>la performances de votre algorithme est une priorité</strong>, les formateurs seront là pour vous guider et vous expliquer ce que l'on entend par "bon algorithme". 
-![time complexity]
+Dans cet exercice, <strong>la performances de votre algorithme est une priorité</strong>, les formateurs seront là pour vous guider et vous expliquer ce que l'on entend par "bon algorithme".  
+![time complexity](assets/timeComplexity.webp)
 
 ### 🔹 Conditions
 
