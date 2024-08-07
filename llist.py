@@ -88,26 +88,29 @@ class Llist:
                 current_node = current_node.next_link  # Puis le noeud courant devient le noeud suivant
                 index_count += 1  # On avance dans l'index
 
-            # Une fois à l'index indiqué
+            # Une fois à l'index indiqué vérifier les différents cas possibles
             # Cas où il n'y a qu'un élément dans la liste
-            if current_node == self.head and current_node == self.tail:  # A VOIR SI POSSIBLE DE REDUIRE CETTE LIGNE DE CODE
+            if self.head == self.tail:
                 # La liste devient vide : la 'tête' et la 'queue' retrouvent leur valeur par défaut 'None'
                 self.head = self.tail = None
-                # print("OK1")  # print de test
-            # Cas où on est à l'index 0 et que la liste contient > 1 élément
-            elif current_node == self.head:
-                self.head = current_node.next_link  # La 'tête' pointe désormais vers le noeud suivant le 1er noeud de la liste
-                # print("OK2")  # print de test
-            # Cas où l'index correspond au dernier élément de la liste
-            elif current_node == self.tail:
-                previous_node.next_link = None  # Le noeud précédent ne pointe vers plus rien ('None')
-                self.tail = previous_node  # La 'queue' pointe désormais vers le noeud précédent
-                # print("OK3")  # print de test
-            # Autres cas
+                print("OK1")  # print de test
             else:
-                # Le noeud précédent va pointer désormais vers le noeud correspondant au noeud suivant de celui qui était à l'index donné
-                previous_node.next_link = current_node.next_link
-                # print("OK4")  # print de test
+                match current_node:
+                    # Cas où on est à l'index 0 et que la liste contient > 1 élément
+                    case self.head:
+                        self.head = current_node.next_link  # La 'tête' pointe désormais vers le noeud suivant le 1er noeud de la liste
+                        print("OK2")  # print de test
+                    # Cas où l'index correspond au dernier élément de la liste
+                    case self.tail:
+                        previous_node.next_link = None  # Le noeud précédent ne pointe vers plus rien ('None')
+                        self.tail = previous_node  # La 'queue' pointe désormais vers le noeud précédent
+                        print("OK3")  # print de test
+                    # Autres cas
+                    case _:
+                        # Le noeud précédent va pointer désormais vers le noeud correspondant au noeud suivant de celui qui était à l'index donné
+                        previous_node.next_link = current_node.next_link
+                        print("OK4")  # print de test
+
             del current_node  # Suppression du noeud à l'index donné
 
     # définir la méthode insert() qui insère un élément à l'index donné
@@ -124,35 +127,23 @@ class Llist:
 
 
 if __name__ == "__main__":
-    node1 = Node(10)
-    node2 = Node(30)
-    node3 = Node(50)
     llist = Llist()
     # print(llist)
     # llist.remove_at(3)
     # print(llist)
 
-    # llist.head = node1
-    # node1.next_link = node2
-    # node2.next_link = node3
-
-    # print(node1.value)
-    # print(node1.next_link)
-    # print(llist.head.value)
-    # print(llist.head.next_link)
-
-    llist.append(node1.value)
+    llist.append(10)
     print(llist.tail.value)
-    llist.append(node2.value)
+    llist.append(20)
     print(llist.tail.value)
-    # llist.append(node3.value)
-    # print(llist.tail.value)
+    llist.append(30)
+    print(llist.tail.value)
     print(llist)
     print(len(llist))
-    llist.remove_at(0)
-    print(llist)
-    print(llist.head.value)
-    print(llist.tail.value)
+    # llist.remove_at(0)
+    # print(llist)
+    # print(llist.head)
+    # print(llist.tail)
     # llist.remove_at(1)
     # print(llist.head.value)
     # print(llist.tail.value)
@@ -162,6 +153,4 @@ if __name__ == "__main__":
     # print(llist.head.value)
     # print(llist.tail.value)
     # llist.remove_at(3)
-    # print(llist)
-    # llist.remove_at(4)
     # print(llist)
