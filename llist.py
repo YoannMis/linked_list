@@ -16,22 +16,7 @@ class Llist:
     def __init__(self) -> None:
         self.head = None  # La chaîne contient une 'tête' qui pointe vers le 1er élément de la liste
         self.tail = None  # Et une 'queue' qui point vers le dernier élément de la liste
-        self.llist_length = 0
-
-    # # Définir une méthode nodes_at_index() pour récupérer le noeud correspondant à l'index donné et son noeud précéder -> A REFLECHIR SI UTILE
-    # def nodes_at_index(self, index: int) -> tuple:
-    #     # Parcourir tous les noeuds de la liste chaînée jusqu'à l'index indiqué
-    #     current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
-    #     index_count = 0  # Et initier un compteur d'index
-    #     # Tant qu'on n'arrive pas à l'index indiqué ni à la fin de la liste
-    #     if index > 0:
-    #         while index_count < index:
-    #             previous_node = current_node  # Le noeud courant devient le noeud précédant
-    #             current_node = current_node.next_link  # Puis le noeud courant devient le noeud suivant
-    #             index_count += 1  # On avance dans l'index
-    #         return (current_node, previous_node)
-    #     else:
-    #         return (current_node,)
+        self.llist_length = 0  # Longueur de la liste chaînée
     
     # définir la méthode magique __str__() pour afficher la liste chaînée
     def __str__(self) -> str:
@@ -108,7 +93,6 @@ class Llist:
             current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
             for _ in range(index-1):
                 current_node = current_node.next_link  # On passe au noeud suivant
-                print(f"current after: {current_node.value}")
 
             # Une fois arrivé vérifier les différents cas possibles
             # Cas où on est à l'index 0 et que la liste contient > 1 élément
@@ -162,7 +146,7 @@ class Llist:
 
             self.llist_length += 1
 
-    # définir la méthode contains() qui vérifie que value est présent dans la liste
+    # Définir la méthode contains() qui vérifie que value est présent dans la liste
     def contains(self, value: int|str) -> bool:
         """Vérifie que la valeur donnée en argument est présente dans la liste chaînée.
 
@@ -181,7 +165,7 @@ class Llist:
                 return True
         return False
 
-    # définir la méthode index_of() qui renvoie l'index de la première valeur rencontrée
+    # Définir la méthode index_of() qui renvoie l'index de la première valeur rencontrée
     def index_of(self, value: int|str) -> int:
         """Renvoie l'index de la première valeur rencontrée.
 
@@ -204,8 +188,7 @@ class Llist:
                 current_node = current_node.next_link
                 index += 1
 
-
-    # définir la méthode at_index() qui renvoie la valeur à l'index donné
+    # Définir la méthode at_index() qui renvoie la valeur à l'index donné
     def at_index(self, index: int) -> int|str:
         """Renvoie la valeur dans la liste chaînée correspondant à l'index donné.
 
@@ -228,7 +211,7 @@ class Llist:
                 current_node = current_node.next_link  # On passe au noeud suivant
             return current_node.value  # On récupère la valeur du noeud
 
-    # définir la méthode is_unique() qui vérifie que la liste ne contient pas de doublons
+    # Définir la méthode is_unique() qui vérifie que la liste ne contient pas de doublons
     def is_unique(self) -> bool:
         """Vérifie que la liste chaînée ne contient pas de doublons.
 
@@ -249,7 +232,7 @@ class Llist:
         
         return current_node.value not in elements
 
-    # définir la méthode reversed() qui inverse le sens de la liste chaînée
+    # Définir la méthode reversed() qui inverse le sens de la liste chaînée
     def reversed(self) -> None:
         """Permet d'inverser le sens de la liste chaînée.
 
@@ -381,21 +364,4 @@ if __name__ == "__main__":
     # llist.append(80)
     # print(llist)
     # llist.reversed()
-    # print(llist)
-
-    # llist.tail = current_node = llist.head
-    # previous_node = current_node
-    # print(f"previous: {previous_node.value}")
-    # print(f"current: {current_node.value}")
-    # current_node = current_node.next_link
-    # print(f"previous: {previous_node.value}")
-    # print(f"current: {current_node.value}")
-    # new_node = Node(current_node.value)
-    # print(f"new node: {new_node.value}")
-    # print(new_node.next_link)
-    # llist.head = new_node
-    # print(f"head: {llist.head.value}")
-    # new_node.next_link = previous_node
-    # print(llist)
-    # llist.tail.next_link = None
     # print(llist)
