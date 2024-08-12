@@ -18,7 +18,7 @@ class Llist:
         self.tail = None  # Et une 'queue' qui point vers le dernier élément de la liste
         self.llist_length = 0  # Longueur de la liste chaînée
     
-    # définir la méthode magique __str__() pour afficher la liste chaînée
+    # Définir la méthode magique __str__() pour afficher la liste chaînée
     def __str__(self) -> str:
         """Permet d'afficher sous forme de str l'instance de la class.
 
@@ -27,7 +27,7 @@ class Llist:
         """ 
         return f"[{', '.join(str(element) for element in self.list_from_llist())}]"
 
-    # définir la méthode magique __len__() pour renvoyer le nombre d'éléments contenus dans la liste chaînée
+    # Définir la méthode magique __len__() pour renvoyer le nombre d'éléments contenus dans la liste chaînée
     def __len__(self) -> int:
         """Permet de renvoyer la longueur de la liste chaînée créée à partir de la class.
 
@@ -36,7 +36,7 @@ class Llist:
         """
         return self.llist_length
 
-    # définir la méthode list_from_llist() qui permet de transformer la liste chaînée en liste standard
+    # Définir la méthode list_from_llist() qui permet de transformer la liste chaînée en liste standard
     def list_from_llist(self) -> list:
         """Permet de transformer la liste chaînée en liste standard.
 
@@ -49,11 +49,10 @@ class Llist:
         # Récupérer une par une les valeurs de chaque noeud dans une liste
         while current_node:  # Tant qu'on n'arrive pas à la fin de la liste
             std_list.append(current_node.value)
-            # print(llist)  # print de vérification
             current_node = current_node.next_link  # Passer au noeud suivant
         return std_list
 
-    # définir la méthode append() pour ajouter un élément à la fin de la liste
+    # Définir la méthode append() pour ajouter un élément à la fin de la liste
     def append(self, value: int|str) -> None:
         """Permet d'ajouter un élément à la fin de la liste chaînée.
 
@@ -62,7 +61,7 @@ class Llist:
         """
         # Créer le nouveau noeud à ajouter avec sa valeur à partir de la classe Node()
         new_node = Node(value)
-        # Cas où la liste est vide, la 'tête' et la 'queue' de la liste pointent vers le nouveau noeud
+        # Cas où la liste est vide, la 'tête' et la 'queue' de la liste deviennent le nouveau noeud
         if not self.head:
             self.head = self.tail = new_node
         # Cas où la liste n'est pas vide
@@ -70,9 +69,9 @@ class Llist:
             # La 'queue' va pointer vers le nouveau noeud ajouté puis devenir à nouveau le dernier noeud de la liste  
             self.tail.next_link = self.tail = new_node
         
-        self.llist_length += 1
+        self.llist_length += 1  # On augmente la longueur de la liste chaînée de 1
 
-    # définir la méthode remove_at() qui retire un élément à l'index donné
+    # Définir la méthode remove_at() qui retire un élément à l'index donné
     def remove_at(self, index: int) -> None:
         """Permer de retirer un élément de la liste chaînée à l'index donné.
 
@@ -97,19 +96,19 @@ class Llist:
             # Une fois arrivé vérifier les différents cas possibles
             # Cas où on est à l'index 0 et que la liste contient > 1 élément
             if index == 0:
-                self.head = current_node.next_link  # La 'tête' pointe désormais vers le noeud suivant le 1er noeud de la liste
+                self.head = current_node.next_link  # La 'tête' devient désormais le noeud suivant le 1er noeud de la liste
             # Cas où l'index correspond au dernier élément de la liste
             elif index == self.__len__()-1:
-                current_node.next_link = None  # Le noeud précédent ne pointe vers plus rien ('None')
-                self.tail = current_node  # La 'queue' pointe désormais vers le noeud précédent
+                current_node.next_link = None  # Le noeud à l'index donné -1 ne pointe vers plus rien ('None')
+                self.tail = current_node  # La 'queue' devient désormais le noeud à l'index donné -1
             # Autres cas
             else:
-                # Le noeud précédent va pointer désormais vers le noeud correspondant au noeud suivant de celui qui était à l'index donné
+                # Le noeud à l'index donné -1 va pointer désormais vers le noeud correspondant au noeud qui était à l'index donné +1
                 current_node.next_link = current_node.next_link.next_link
 
-            self.llist_length -= 1  # on diminue de 1 la longueur de la liste chaînée
+            self.llist_length -= 1  # On diminue de 1 la longueur de la liste chaînée
 
-    # définir la méthode insert() qui insère un élément à l'index donné
+    # Définir la méthode insert() qui insère un élément à l'index donné
     def insert(self, index: int, value : int|str) -> None:
         """Permet d'insérer un élément à l'index donné.
 
@@ -122,29 +121,25 @@ class Llist:
             print("List index out of range.")
         # Autres cas
         else:
-            # Parcourir tous les noeuds de la liste chaînée jusqu'à l'index indiqué
+            # Parcourir tous les noeuds jusqu'au noeud situé à l'index précédent l'index indiqué
             current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
-            index_count = 0  # Et initier un compteur d'index
-            # Tant qu'on n'arrive pas à l'index indiqué ni à la fin de la liste
-            while index_count < index:
-                previous_node = current_node  # Le noeud courant devient le noeud précédant
-                current_node = current_node.next_link  # Puis le noeud courant devient le noeud suivant
-                index_count += 1  # On avance dans l'index
-            # Une fois à l'index indiqué vérifier les différents cas possibles
-            # Créer le nouveau noeud à ajouter avec sa valeur à partir de la classe Node()
+            for _ in range(index-1):
+                current_node = current_node.next_link  # On passe au noeud suivant
+
+            # Une fois arrivé vérifier les différents cas possibles
+            # Créer le nouveau noeud à insérer avec sa valeur à partir de la classe Node()
             new_node = Node(value)
-            match current_node:
+            match index:
                 # Cas où on est à l'index 0
-                case self.head:
-                    self.head = new_node  # La 'tête' pointe désormais vers le nouveau noeud inséré
-                    new_node.next_link = current_node  # Le nouveau noeud inséré pointe vers l'ancien noeud qui était présent à l'index donné
+                case 0:
+                    new_node.next_link = self.head  # Le nouveau noeud inséré pointe vers l'ancien noeud qui était à l'index 0 (soit la 'tête')
+                    self.head = new_node  # La 'tête' devient le nouveau noeud inséré
                 # Autres cas
                 case _:
-                    # Le noeud précédent va pointer désormais vers le nouveau noeud inséré
-                    previous_node.next_link = new_node
-                    new_node.next_link = current_node  # Et le nouveau noeud va pointer vers l'ancien noeud qui était présent à l'index donné
+                    new_node.next_link = current_node.next_link  # Le nouveau noeud inséré va pointer vers le noeud qui était à l'index donné
+                    current_node.next_link = new_node  # Et le noeud qui était à l'index donné -1 va pointer vers le nouveau noeud inséré
 
-            self.llist_length += 1
+            self.llist_length += 1  # On augmente la longueur de la liste chaînée de 1
 
     # Définir la méthode contains() qui vérifie que value est présent dans la liste
     def contains(self, value: int|str) -> bool:
@@ -159,11 +154,13 @@ class Llist:
         # Vérifier d'abord si la valeur n'est pas la même que la 'queue' pour éviter d'avoir à parcourir toute la liste 
         if value == self.tail.value:
             return True
-        # Parcourir la liste et vérifier les valeurs à chaque index de la liste
-        for index in range(self.__len__()):
-            if self.at_index(index) == value:
+        # Sinon parcourir la liste chaînée et vérifier les valeurs de chaque élément de la liste
+        current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
+        while current_node:
+            if current_node.value == value:
                 return True
-        return False
+            current_node = current_node.next_link  # On passe au noeud suivant
+        return False  # Si rien n'est trouvé retourne False
 
     # Définir la méthode index_of() qui renvoie l'index de la première valeur rencontrée
     def index_of(self, value: int|str) -> int:
@@ -180,13 +177,13 @@ class Llist:
             return -1
         # Sinon parcourir la liste en vérifiant la valeur de chaque noeud
         else:
-            current_node = self.head
+            current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
             index = 0
             while current_node:
                 if current_node.value == value:
                     return index  # Retourner l'index si la valeur est trouvée
-                current_node = current_node.next_link
-                index += 1
+                current_node = current_node.next_link  # Sinon on passe au noeud suivant
+                index += 1  # Et à l'index suivant
 
     # Définir la méthode at_index() qui renvoie la valeur à l'index donné
     def at_index(self, index: int) -> int|str:
@@ -218,9 +215,9 @@ class Llist:
         Returns:
             bool: True s'il n'y a pas de doublons dans la liste, False sinon
         """
-        # Initialiser une liste vide où stocker les éléments de la liste chaînée tant qu'il n'y a pas de doublons
+        # Initialiser une liste vide où stocker les valeurs des éléments de la liste chaînée tant qu'il n'y a pas de doublons
         elements = []
-        current_node = self.head   # Partir de la 'tête' pour parcourir la liste chaînée
+        current_node = self.head  # Partir de la 'tête' pour parcourir la liste chaînée
         # Parcourir la liste chaînée en vérifiant que l'élément n'est pas présent en doublon
         while current_node != self.tail and current_node.value not in elements:
             # Vérifier d'abord si l'élément n'est pas égal à la 'queue' pour ne pas avoir à parcourir toute la liste chaînée
@@ -237,38 +234,41 @@ class Llist:
         """Permet d'inverser le sens de la liste chaînée.
 
         """
-        # # Enregistrer la 'queue' de la liste en tant que nouvelle 'tête' pour plus tard
+        # Sauvegarder la 'queue' de la liste chaînée en tant que nouvelle 'tête' pour plus tard
         self.tail = self.head
-        current_node = self.head.next_link
+        # Parcourir la liste chaînée afin de récupérer chaque noeud
+        current_node = self.head.next_link  # En partant du 2eme noeud de la liste
         while current_node:
+            # Créer un nouveau noeud contenant la valeur du noeud en cours que l'on va insérer en 'tête' de la liste chaînée
             new_node = Node(current_node.value)
-            new_node.next_link = self.head
-            self.head = new_node
-            current_node = current_node.next_link
+            new_node.next_link = self.head  # Le nouveau noeud inséré pointe vers l'ancien noeud qui était à l'index 0 (soit la 'tête')
+            self.head = new_node  # La 'tête' devient le nouveau noeud inséré
+            current_node = current_node.next_link  # On passe au noeud suivant
 
+        # On coupe la 'queue' du lien qui la reliait aux anciens noeuds pour ne garder que les noeuds de la liste dans l'ordre inverse
         self.tail.next_link = None
 
 if __name__ == "__main__":
-    llist = Llist()
-    print(llist)
-    print(len(llist))
+    # llist = Llist()
+    # print(llist)
+    # print(len(llist))
     
     # ---Test append()---
-    llist.append(10)
+    # llist.append(10)
     # print(llist.head.value)
     # print(llist.tail.value)
-    print(len(llist))
-    llist.append(20)
+    # print(len(llist))
+    # llist.append(20)
     # print(llist.head.value)
     # print(llist.tail.value)
-    print(len(llist))
-    llist.append(30)
-    llist.append(40)
-    llist.append(50)
+    # print(len(llist))
+    # llist.append(30)
+    # llist.append(40)
+    # llist.append(50)
     # print(llist.head.value)
     # print(llist.tail.value)
-    print(llist)
-    print(len(llist))
+    # print(llist)
+    # print(len(llist))
 
     # ---Test remove()---
     # llist.remove_at(0)
@@ -298,8 +298,9 @@ if __name__ == "__main__":
     # print(llist)
     # print(llist.head.value)
     # print(llist.tail.value)
-    # llist.insert(2, 50)
+    # llist.insert(4, 100)
     # print(llist)
+    # print(len(llist))
     # print(llist.head.value)
     # print(llist.tail.value)
     # llist.insert(3, 50)
@@ -325,43 +326,43 @@ if __name__ == "__main__":
     # print(llist.is_unique())
 
     # --Test reversed()---
-    llist.reversed()
-    print(llist)
-    print(len(llist))
+    # llist.reversed()
+    # print(llist)
+    # print(len(llist))
 
 
     # --Test challenge example---
-    # llist = Llist()
-    # print(llist)
+    llist = Llist()
+    print(llist)
 
-    # llist.append(3)
-    # llist.append(10)
-    # llist.append(30)
-    # print(len(llist))
-    # print(llist)
+    llist.append(3)
+    llist.append(10)
+    llist.append(30)
+    print(len(llist))
+    print(llist)
 
-    # llist.insert(1, 50)
-    # print(llist)
+    llist.insert(1, 50)
+    print(llist)
 
-    # llist.remove_at(0)
-    # print(llist)
+    llist.remove_at(0)
+    print(llist)
 
-    # print(llist.contains(10))
-    # print(llist.contains(87))
+    print(llist.contains(10))
+    print(llist.contains(87))
 
-    # print(llist.index_of(10))
-    # print(llist.index_of(87))
+    print(llist.index_of(10))
+    print(llist.index_of(87))
 
-    # print(llist.at_index(1))
+    print(llist.at_index(1))
 
-    # print(llist.is_unique())
-    # llist.append(50)
-    # print(llist)
-    # print(llist.is_unique())
+    print(llist.is_unique())
+    llist.append(50)
+    print(llist)
+    print(llist.is_unique())
 
-    # llist.append(20)
-    # llist.append(100)
-    # llist.append(80)
-    # print(llist)
-    # llist.reversed()
-    # print(llist)
+    llist.append(20)
+    llist.append(100)
+    llist.append(80)
+    print(llist)
+    llist.reversed()
+    print(llist)
