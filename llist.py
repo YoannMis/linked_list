@@ -36,22 +36,6 @@ class Llist:
         """
         return self.llist_length
 
-    # Définir la méthode list_from_llist() qui permet de transformer la liste chaînée en liste standard
-    def list_from_llist(self) -> list:
-        """Permet de transformer la liste chaînée en liste standard.
-
-        Returns:
-            list: liste standard contenant les valeurs des noeuds de la liste chaînée
-        """
-        std_list = []
-        # Parcourir tous les noeuds de la liste chaînée
-        current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
-        # Récupérer une par une les valeurs de chaque noeud dans une liste
-        while current_node:  # Tant qu'on n'arrive pas à la fin de la liste
-            std_list.append(current_node.value)
-            current_node = current_node.next_link  # Passer au noeud suivant
-        return std_list
-
     # Définir la méthode append() pour ajouter un élément à la fin de la liste
     def append(self, value: int|str) -> None:
         """Permet d'ajouter un élément à la fin de la liste chaînée.
@@ -71,42 +55,63 @@ class Llist:
         
         self.llist_length += 1  # On augmente la longueur de la liste chaînée de 1
 
-    # Définir la méthode remove_at() qui retire un élément à l'index donné
-    def remove_at(self, index: int) -> None:
-        """Permer de retirer un élément de la liste chaînée à l'index donné.
+    # Définir la méthode at_index() qui renvoie la valeur à l'index donné
+    def at_index(self, index: int) -> int|str:
+        """Renvoie la valeur dans la liste chaînée correspondant à l'index donné.
 
         Args:
-            index (int): index souhaité pour retirer un élément de la liste
+            index (int): index donné
+
+        Returns:
+            int|str: la valeur correspondante
         """
         # Cas où l'index est en dehors de la range de la liste, indiquer un message le précisant
-        if index >= self.__len__():
+        if index >= self.llist_length:
             print("List index out of range.")
-        # Cas où il n'y a qu'un élément dans la liste
-        elif self.head == self.tail:
-            # La liste devient vide : la 'tête' et la 'queue' retrouvent leur valeur par défaut 'None'
-            self.head = self.tail = None
-            self.llist_length = 0  # la longueur de la liste chaînée retombe à 0
-        # Autres cas
+        # Vérifier d'abord si l'index correspond à la queue de la liste chaînée
+        elif index == self.llist_length-1:
+            return self.tail.value
+        # Sinon parcourir la liste chaînée jusqu'à l'index donné
         else:
-            # Parcourir tous les noeuds jusqu'au noeud situé à l'index précédent l'index indiqué
-            current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
-            for _ in range(index-1):
+            current_node = self.head  # On part de la 'tête'
+            for _ in range(index):
                 current_node = current_node.next_link  # On passe au noeud suivant
+            return current_node.value  # On récupère la valeur du noeud
 
-            # Une fois arrivé vérifier les différents cas possibles
-            # Cas où on est à l'index 0 et que la liste contient > 1 élément
-            if index == 0:
-                self.head = current_node.next_link  # La 'tête' devient désormais le noeud suivant le 1er noeud de la liste
-            # Cas où l'index correspond au dernier élément de la liste
-            elif index == self.__len__()-1:
-                current_node.next_link = None  # Le noeud à l'index donné -1 ne pointe vers plus rien ('None')
-                self.tail = current_node  # La 'queue' devient désormais le noeud à l'index donné -1
-            # Autres cas
-            else:
-                # Le noeud à l'index donné -1 va pointer désormais vers le noeud correspondant au noeud qui était à l'index donné +1
-                current_node.next_link = current_node.next_link.next_link
+    # Définir la méthode contains() qui vérifie que value est présent dans la liste
+    def contains(self, value: int|str) -> bool:
+        """Vérifie que la valeur donnée en argument est présente dans la liste chaînée.
 
-            self.llist_length -= 1  # On diminue de 1 la longueur de la liste chaînée
+        Args:
+            value (int | str): valeur à vérifier
+
+        Returns:
+            bool: True si la valeur est présente, False sinon
+        """
+        # Vérifier si la valeur est présente dans la liste chaînée grâce à la méthode index_of()
+        return self.index_of(value) >= 0
+
+    # Définir la méthode index_of() qui renvoie l'index de la première valeur rencontrée
+    def index_of(self, value: int|str) -> int:
+        """Renvoie l'index de la première valeur rencontrée.
+
+        Args:
+            value (int | str): valeur à trouver
+
+        Returns:
+            int: index correspondant à la valeur cherchée si elle existe, sinon -1
+        """
+        # Parcourir la liste chaînée et vérifier si la valeur est contenue dans la liste chaînée
+        current_node = self.head  # En affectant le noeud en cours au départ sur la 'tête' de la liste
+        index = 0  # Et en partant de l'index 0
+        while current_node:
+            if current_node.value == value:
+                return index  # Retourner l'index si la valeur est trouvée
+            current_node = current_node.next_link  # Sinon on passe au noeud suivant
+            index += 1  # Et à l'index suivant
+        
+        # Si après avoir parcouru toute la liste chaînée la valeur recherchée n'est pas retrouvée, alors retourner -1
+        return -1
 
     # Définir la méthode insert() qui insère un élément à l'index donné
     def insert(self, index: int, value : int|str) -> None:
@@ -117,7 +122,7 @@ class Llist:
             value (int | str): valeur à attribuer au nouvel élément inséré
         """
         # Cas où l'index est en dehors de la range de la liste, indiquer un message le précisant
-        if index >= self.__len__():
+        if index >= self.llist_length:
             print("List index out of range.")
         # Autres cas
         else:
@@ -141,73 +146,6 @@ class Llist:
 
             self.llist_length += 1  # On augmente la longueur de la liste chaînée de 1
 
-    # Définir la méthode contains() qui vérifie que value est présent dans la liste
-    def contains(self, value: int|str) -> bool:
-        """Vérifie que la valeur donnée en argument est présente dans la liste chaînée.
-
-        Args:
-            value (int | str): valeur à vérifier
-
-        Returns:
-            bool: True si la valeur est présente, False sinon
-        """
-        # Vérifier d'abord si la valeur n'est pas la même que la 'queue' pour éviter d'avoir à parcourir toute la liste 
-        if value == self.tail.value:
-            return True
-        # Sinon parcourir la liste chaînée et vérifier les valeurs de chaque élément de la liste
-        current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
-        while current_node:
-            if current_node.value == value:
-                return True
-            current_node = current_node.next_link  # On passe au noeud suivant
-        return False  # Si rien n'est trouvé retourne False
-
-    # Définir la méthode index_of() qui renvoie l'index de la première valeur rencontrée
-    def index_of(self, value: int|str) -> int:
-        """Renvoie l'index de la première valeur rencontrée.
-
-        Args:
-            value (int | str): valeur à trouver
-
-        Returns:
-            int: index correspondant à la valeur cherchée si elle existe, sinon -1
-        """
-        # Vérifier si la valeur est contenue dans la liste chaînée
-        if not self.contains(value):
-            return -1
-        # Sinon parcourir la liste en vérifiant la valeur de chaque noeud
-        else:
-            current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
-            index = 0
-            while current_node:
-                if current_node.value == value:
-                    return index  # Retourner l'index si la valeur est trouvée
-                current_node = current_node.next_link  # Sinon on passe au noeud suivant
-                index += 1  # Et à l'index suivant
-
-    # Définir la méthode at_index() qui renvoie la valeur à l'index donné
-    def at_index(self, index: int) -> int|str:
-        """Renvoie la valeur dans la liste chaînée correspondant à l'index donné.
-
-        Args:
-            index (int): index donné
-
-        Returns:
-            int|str: la valeur correspondante
-        """
-        # Cas où l'index est en dehors de la range de la liste, indiquer un message le précisant
-        if index >= self.__len__():
-            print("List index out of range.")
-        # Vérifier d'abord si l'index correspond à la queue de la liste chaînée
-        elif index == self.__len__()-1:
-            return self.tail.value
-        # Sinon parcourir la liste chaînée jusqu'à l'index donné
-        else:
-            current_node = self.head  # On part de la 'tête'
-            for _ in range(index):
-                current_node = current_node.next_link  # On passe au noeud suivant
-            return current_node.value  # On récupère la valeur du noeud
-
     # Définir la méthode is_unique() qui vérifie que la liste ne contient pas de doublons
     def is_unique(self) -> bool:
         """Vérifie que la liste chaînée ne contient pas de doublons.
@@ -228,6 +166,59 @@ class Llist:
             current_node = current_node.next_link
         
         return current_node.value not in elements
+
+    # Définir la méthode list_from_llist() qui permet de transformer la liste chaînée en liste standard
+    def list_from_llist(self) -> list:
+        """Permet de transformer la liste chaînée en liste standard.
+
+        Returns:
+            list: liste standard contenant les valeurs des noeuds de la liste chaînée
+        """
+        std_list = []
+        # Parcourir tous les noeuds de la liste chaînée
+        current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
+        # Récupérer une par une les valeurs de chaque noeud dans une liste
+        while current_node:  # Tant qu'on n'arrive pas à la fin de la liste
+            std_list.append(current_node.value)
+            current_node = current_node.next_link  # Passer au noeud suivant
+        return std_list
+
+    # Définir la méthode remove_at() qui retire un élément à l'index donné
+    def remove_at(self, index: int) -> None:
+        """Permer de retirer un élément de la liste chaînée à l'index donné.
+
+        Args:
+            index (int): index souhaité pour retirer un élément de la liste
+        """
+        # Cas où l'index est en dehors de la range de la liste, indiquer un message le précisant
+        if index >= self.llist_length:
+            print("List index out of range.")
+        # Cas où il n'y a qu'un élément dans la liste
+        elif self.head == self.tail:
+            # La liste devient vide : la 'tête' et la 'queue' retrouvent leur valeur par défaut 'None'
+            self.head = self.tail = None
+            self.llist_length = 0  # la longueur de la liste chaînée retombe à 0
+        # Autres cas
+        else:
+            # Parcourir tous les noeuds jusqu'au noeud situé à l'index précédent l'index indiqué
+            current_node = self.head  # En affectant le noeud en cours au départ sur la tête de la liste
+            for _ in range(index-1):
+                current_node = current_node.next_link  # On passe au noeud suivant
+
+            # Une fois arrivé vérifier les différents cas possibles
+            # Cas où on est à l'index 0 et que la liste contient > 1 élément
+            if index == 0:
+                self.head = current_node.next_link  # La 'tête' devient désormais le noeud suivant le 1er noeud de la liste
+            # Cas où l'index correspond au dernier élément de la liste
+            elif index == self.llist_length-1:
+                current_node.next_link = None  # Le noeud à l'index donné -1 ne pointe vers plus rien ('None')
+                self.tail = current_node  # La 'queue' devient désormais le noeud à l'index donné -1
+            # Autres cas
+            else:
+                # Le noeud à l'index donné -1 va pointer désormais vers le noeud correspondant au noeud qui était à l'index donné +1
+                current_node.next_link = current_node.next_link.next_link
+
+            self.llist_length -= 1  # On diminue de 1 la longueur de la liste chaînée
 
     # Définir la méthode reversed() qui inverse le sens de la liste chaînée
     def reversed(self) -> None:
